@@ -2,11 +2,8 @@
 
 # config
 slack_url='https://hooks.slack.com/services/XXX/XXXX/XXXXX'
-slack_username='Zabbix'
-channel="$1"
-title="$2"
-params="$3"
-emoji=':ghost:'
+title="$1"
+params="$2"
 timeout="5"
 cmd_curl="/usr/bin/curl"
 cmd_wget="/usr/bin/wget"
@@ -53,11 +50,8 @@ else
   color="#808080"
 fi
 
-# set payload
-payload="payload={
-  \"channel\": \"${channel}\",
-  \"username\": \"${slack_username}\",
-  \"icon_emoji\": \"${emoji}\",
+# set json
+json="{
   \"attachments\": [
     {
       \"fallback\": \"Date / Time: ${datetime} - ${title}\",
@@ -91,5 +85,5 @@ payload="payload={
 }"
 
 # send to slack
-${cmd_curl} -m ${timeout} --data-urlencode "${payload}" "${slack_url}"
+${cmd_curl} -m ${timeout} --data "${json}" "${slack_url}"
 

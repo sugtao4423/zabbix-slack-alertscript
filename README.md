@@ -10,7 +10,6 @@ Send notification to Slack.
 * タイプ: `スクリプト`
 * スクリプト名: `slack.sh`
 * スクリプトパラメータ:
-  - `{ALERT.SENDTO}`
   - `{ALERT.SUBJECT}`
   - `{ALERT.MESSAGE}`
 
@@ -20,7 +19,7 @@ Send notification to Slack.
 `管理` -> `ユーザー` -> `メディア`タブ
 
 * タイプ: `Slack`
-* 送信先: `#zabbix` // Slackのチャンネル
+* 送信先: 無視されるのでなんでも可
 * 有効な時間帯: `1-7,00:00-24:00`
 * 分類は必要なものをチェック
 * 有効
