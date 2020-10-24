@@ -1,83 +1,43 @@
+# zabbix slack alertscript
+Send notification to Slack.
 
-# About
+# Zabbix Configure
 
-Zabbix Server Action to Slack.com
+## メディアタイプ
+`管理` -> `メディアタイプ`
 
-![Zabbix Server to Slack.com](https://raw.githubusercontent.com/bageljp/zabbix-slack/master/img/zabbix_chart.png "Zabbix Server to Slack.com")
+* 名前: `Slack`
+* タイプ: `スクリプト`
+* スクリプト名: `slack.sh`
+* スクリプトパラメータ:
+  - `{ALERT.SENDTO}`
+  - `{ALERT.SUBJECT}`
+  - `{ALERT.MESSAGE}`
 
-# Installation
+## ユーザー
+通知したいユーザーのメディアにSlackを登録
 
-### Slack.com settings
+`管理` -> `ユーザー` -> `メディア`タブ
 
-[Slak.com Incoming Webhooks](https://api.slack.com/incoming-webhooks)
+* タイプ: `Slack`
+* 送信先: `#zabbix` // Slackのチャンネル
+* 有効な時間帯: `1-7,00:00-24:00`
+* 分類は必要なものをチェック
+* 有効
 
-### Script settings in Zabbix Server
+## アクション
+`設定` -> `アクション`
 
-```
-cd /usr/lib/zabbix/alertscripts    # AlertScriptsPath
-wget https://raw.githubusercontent.com/bageljp/zabbix-slack/master/slack.sh
-chmod a+x slack.sh
-vi slack.sh
-```
+* 名前: `Report problems to slack`
 
-<table>
-  <tr>
-    <td><tt>slack_url</tt></td>
-	<td>slack integration url. (ex. https://hooks.slack.com/services/XXX/XXXX/XXXXX)</td>
-  </tr>
-  <tr>
-    <td><tt>slack_username</tt></td>
-    <td>slack post username.</td>
-  </tr>
-  <tr>
-    <td><tt>emoji</tt></td>
-    <td>slack emoji.</td>
-  </tr>
-  <tr>
-    <td><tt>zabbix_baseurl</tt></td>
-    <td>full URL of zabbix mainpage</td>
-  </tr>
-  <tr>
-    <td><tt>zabbix_username</tt></td>
-    <td>zabbix username to grab the chart</td>
-  </tr>
-  <tr>
-    <td><tt>zabbix_password</tt></td>
-    <td>zabbix password</td>
-  </tr>
-  <tr>
-    <td><tt>chart_period</tt></td>
-    <td>how many seconds to be shown on the chart</td>
-  </tr>
-  <tr>
-    <td><tt>chart_width</tt></td>
-    <td>width of the chart</td>
-  </tr>
-  <tr>
-    <td><tt>chart_height</tt></td>
-    <td>height of the chart</td>
-  </tr>
-  <tr>
-    <td><tt>chart_baseurl</tt></td>
-    <td>where the charts will be hosted</td>
-  </tr>
-  <tr>
-    <td><tt>chart_basedir</tt></td>
-    <td>charts will be downloaded there</td>
-  </tr>
-</table>
+`実行内容`タブ
 
-### Zabbix Server Web Interface settings
+* デフォルトのアクション実行ステップの間隔: `1h`
 
-* Administration MediaType
-
-![Zabbix Server MediaType settings](https://raw.githubusercontent.com/bageljp/zabbix-slack/master/img/zabbix_mediatype.png "Zabbix Server MediaType settings.")
-
-* Action settings ``default message``
-
-![Zabbix Server Action settings](https://raw.githubusercontent.com/bageljp/zabbix-slack/master/img/zabbix_action.png "Zabbix Server Action settings.")
-
-* copy and paste.
+* 実行内容
+  - 次のメディアのみ使用: `Slack`
+  - 件名: `** PROBLEM alert - {HOST.NAME}: {EVENT.NAME}`
+  - メッセージ:
 ```
 HOST: {HOST.NAME}
 TRIGGER_NAME: {TRIGGER.NAME}
@@ -92,3 +52,20 @@ EVENT_ID: {EVENT.ID}
 TRIGGER_URL: {TRIGGER.URL}
 ```
 
+* 復旧時の実行内容
+  - 次のメディアのみ使用: `Slack`
+  - 件名: `** RECOVERY alert - {HOST.NAME}: {EVENT.NAME}`
+  - メッセージ:
+```
+HOST: {HOST.NAME}
+TRIGGER_NAME: {TRIGGER.NAME}
+TRIGGER_STATUS: {TRIGGER.STATUS}
+TRIGGER_SEVERITY: {TRIGGER.SEVERITY}
+DATETIME: {DATE} / {TIME}
+ITEM_ID: {ITEM.ID1}
+ITEM_NAME: {ITEM.NAME1}
+ITEM_KEY: {ITEM.KEY1}
+ITEM_VALUE: {ITEM.VALUE1}
+EVENT_ID: {EVENT.ID}
+TRIGGER_URL: {TRIGGER.URL}
+```
