@@ -6,7 +6,6 @@ title="$1"
 params="$2"
 timeout="5"
 cmd_curl="/usr/bin/curl"
-cmd_wget="/usr/bin/wget"
 
 # set params
 host="`echo \"${params}\" | grep 'HOST: ' | awk -F'HOST: ' '{print $2}' | sed -e 's/
