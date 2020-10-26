@@ -21,7 +21,7 @@ item_id="`echo \"${params}\" | grep 'ITEM_ID: ' | awk -F'ITEM_ID: ' '{print $2}'
 
 # if triger url is empty then we link to the graph with the item_id
 if [ "${trigger_url}" == "" ]; then
-    trigger_url="${zabbix_baseurl}/history.php?action=showgraph&itemids=${item_id}"
+    trigger_url="${zabbix_baseurl}/history.php?action=showgraph&itemids[]=${item_id}"
 fi
 
 # set color
