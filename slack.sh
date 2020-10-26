@@ -7,6 +7,8 @@ params="$2"
 timeout="5"
 cmd_curl="/usr/bin/curl"
 
+zabbix_baseurl='http://zabbix.example.com'
+
 # set params
 host="`echo \"${params}\" | grep 'HOST: ' | awk -F'HOST: ' '{print $2}' | tr -d '\r'`"
 trigger_name="`echo \"${params}\" | grep 'TRIGGER_NAME: ' | awk -F'TRIGGER_NAME: ' '{print $2}' | tr -d '\r'`"
@@ -15,6 +17,12 @@ trigger_severity="`echo \"${params}\" | grep 'TRIGGER_SEVERITY: ' | awk -F'TRIGG
 trigger_url="`echo \"${params}\" | grep 'TRIGGER_URL: ' | awk -F'TRIGGER_URL: ' '{print $2}' | tr -d '\r'`"
 datetime="`echo \"${params}\" | grep 'DATETIME: ' | awk -F'DATETIME: ' '{print $2}' | tr -d '\r'`"
 item_value="`echo \"${params}\" | grep 'ITEM_VALUE: ' | awk -F'ITEM_VALUE: ' '{print $2}' | tr -d '\r'`"
+item_id="`echo \"${params}\" | grep 'ITEM_ID: ' | awk -F'ITEM_ID: ' '{print $2}' | tr -d '\r'`"
+
+# if triger url is empty then we link to the graph with the item_id
+if [ "${trigger_url}" == "" ]; then
+    trigger_url="${zabbix_baseurl}/history.php?action=showgraph&itemids=${item_id}"
+fi
 
 # set color
 if [ "${trigger_status}" == 'OK' ]; then
